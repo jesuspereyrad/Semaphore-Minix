@@ -2,7 +2,7 @@
 Operating System Project
 
 
-Callnhr have all the system call
+Callnhr have all the system call /n
 mysemaphore.h have the api for the user
 misc.c have the core of the semaphore functions
 table.c map the call with the proto function.
