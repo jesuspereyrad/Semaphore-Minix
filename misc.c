@@ -531,8 +531,9 @@ id, pid);
 					
 			//send pid to queue
 			push(semaphores[id]->q, pid);
-			printf("Semaphore %d process %d is blocked \n \n",
-id, pid);		//block pid
+			printf("Semaphore %d process %d is blocked \n \n", id, pid);		
+
+      //block pid
 			return(EDONTREPLY);
 		}
 	}
@@ -557,17 +558,22 @@ int sem_up()
 				semaphores[id]->value++;
 				if(semaphores[id]->q->size > 0){
 					semaphores[id]->value--;
-					m.m_type = OK;
-					m.m_source = 
-pop(semaphores[id]->q);
-					printf("process %d out of the queue\n",
-m.m_source);
+					/* WARNING here you can't use signal to kill a process because is restricted by the kernel call SYS_KILL
+          This will return EPERM: Cannot send a signal to a kernel task. PM cannot signal a user process with a notification message.
+          */
+          //Awake process.
+          m.m_type = OK;
+					m.m_source = pop(semaphores[id]->q);
+					printf("process %d out of the queue\n",m.m_source);
 					_ipc_sendnb_intr(m.m_source,&m);
+          j = 0;
+
 				}
 			}
-			printf("this semaphore is in use by other");
-		
-		j = 0;
+      else{
+			 printf("this semaphore is in use by other process");
+       j = -1;
+      }
 		}
 	}
 	return j;

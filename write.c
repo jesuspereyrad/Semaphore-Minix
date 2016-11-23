@@ -8,9 +8,9 @@ int main(){
 	sem_create(write);
 	FILE *text;
 	char str[] = "hello my name is jesus pereyra";
-	text = fopen("/home/text.txt", "w");
-	for(i = 0; i < 5; i++){	
-		fseek(text, SEEK_SET, 0);
+	text = fopen("/home/text.txt", "w");		
+	fseek(text, SEEK_SET, 0);
+	for(i = 0; i < 5; i++){
 		sem_down(write);
 		printf("Proceso %i empieza a escribir", i);
  		fwrite(str, 1, sizeof(str), text);

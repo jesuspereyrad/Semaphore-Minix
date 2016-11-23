@@ -34,21 +34,18 @@ int sem_terminate(int id)
 }
 
 int sem_down(int id)
-{
-//	if(signal(SIGSTOP, sig));
-	int lock = 1;
-	while(lock == 1){
-		pause();
-		lock = semaphore(id, PM_SEM_DOWN);
-	}
-	return lock;
+{	
+	int lock = semaphore(id, PM_SEM_DOWN);
+	if(lock == 0)
+		return 0;
+	else 
+		return -1;
 	
 	
 }
 
 int sem_up(int id)
 {
-//	if(signal(SIGCONT, sig));
 	int j = semaphore(id, PM_SEM_UP);
 	if(j == 0)
 		return 0;
